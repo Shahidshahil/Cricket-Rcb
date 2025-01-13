@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Cricket League 2025 Auction</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    header img {
+      width: 50px;
+      height: auto;
+      margin-right: 10px;
+    }
+    img {
+      width: 150px;
+      height: auto;
+    }
+    #players div {
+      margin: 10px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .bid-button {
+      background-color: #28a745;
+      color: white;
+    }
+    .leave-button {
+      background-color: #dc3545;
+      color: white;
+    }
+    .leave-button:hover, .bid-button:hover {
+      opacity: 0.8;
+    }
+    #bid-message, #leave-message {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Embed MP3 Audio for Background Music (used to play on page load) -->
+  <audio id="auction-audio" preload="auto" autoplay loop>
+    <source src="https://github.com/Shahidshahil/Ipl-mp3/raw/refs/heads/main/VIVO%20IPL%20tone%20%20latest%202021%20%20IPL%20Music%20%20Free%20ipl%20music%20%20ipl%20music%20%20IPL%20Live%20Music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <header>
+    <img src="https://i.imgur.com/Uu0F4yG.png" alt="Auction Logo">
+    <h2>Real Cricket League 2025 Auction</h2>
+  </header>
+  <h3>Royal Challengers Bangalore</h3>
+  <img src="https://i.imgur.com/kAnFQ8Z.jpeg" alt="RCB Logo">
+  <p>Base Price: ₹100</p>
+  <div id="bid-message"></div>
+  <div id="leave-message"></div>
+  <div id="players">
+    <div id="player1">
+      Shahil - <button class="bid-button" onclick="placeBid('Shahil')">Bid</button> <button class="leave-button" onclick="leaveAuction(1)">Leave</button>
+    </div>
+    <div id="player2">
+      Irfan - <button class="bid-button" onclick="placeBid('Irfan')">Bid</button> <button class="leave-button" onclick="leaveAuction(2)">Leave</button>
+    </div>
+    <div id="player3">
+      Irshad - <button class="bid-button" onclick="placeBid('Irshad')">Bid</button> <button class="leave-button" onclick="leaveAuction(3)">Leave</button>
+    </div>
+    <div id="player4">
+      Mahesh - <button class="bid-button" onclick="placeBid('Mahesh')">Bid</button> <button class="leave-button" onclick="leaveAuction(4)">Leave</button>
+    </div>
+    <div id="player5">
+      Bazeer - <button class="bid-button" onclick="placeBid('Bazeer')">Bid</button> <button class="leave-button" onclick="leaveAuction(5)">Leave</button>
+    </div>
+    <div id="player6">
+      Naveen - <button class="bid-button" onclick="placeBid('Naveen')">Bid</button> <button class="leave-button" onclick="leaveAuction(6)">Leave</button>
+    </div>
+    <div id="player7">
+      Rockstar - <button class="bid-button" onclick="placeBid('Rockstar')">Bid</button> <button class="leave-button" onclick="leaveAuction(7)">Leave</button>
+    </div>
+    <div id="player8">
+      Raasikumar - <button class="bid-button" onclick="placeBid('Raasikumar')">Bid</button> <button class="leave-button" onclick="leaveAuction(8)">Leave</button>
+    </div>
+  </div>
+
+  <script>
+    let basePrice = 100;
+    let highestBid = basePrice;
+    let highestBidder = "Shahil";
+    let playersLeft = 0;
+    const totalPlayers = 8;
+
+    // Reference to the audio element
+    const auctionAudio = document.getElementById('auction-audio');
+
+    function placeBid(playerName) {
+      if (playersLeft < totalPlayers - 1) {
+        highestBid += 50;
+        highestBidder = playerName;
+        // Play audio when the bid button is clicked
+        auctionAudio.currentTime = 0; // Rewind to the start
+        auctionAudio.play();
+        document.getElementById('bid-message').innerText = `${playerName} Bid ₹${highestBid} for Royal Challengers Bangalore`;
+      }
+    }
+
+    function leaveAuction(player) {
+      playersLeft++;
+      const playerName = document.getElementById(`player${player}`).innerText.split(' - ')[0];
+      document.getElementById(`player${player}`).style.display = 'none';
+      document.getElementById('leave-message').innerText = `${playerName} Leave the Bid 🙌🏻`;
+      if (playersLeft === totalPlayers - 1) {
+        document.getElementById('bid-message').innerText = `Congratulations, Royal Challengers Bangalore sold to ${highestBidder} for ₹${highestBid}`;
+      }
+    }
+  </script>
+</body>
+</html>
