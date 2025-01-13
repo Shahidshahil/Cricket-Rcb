@@ -27,6 +27,19 @@
     }
     #players div {
       margin: 10px;
+      position: relative;
+    }
+    .live-status {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: green;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 12px;
+      display: none; /* Initially hidden */
     }
     button {
       margin: 5px;
@@ -51,12 +64,20 @@
       margin-top: 20px;
       font-size: 18px;
     }
+    #player-count {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    #invite-section {
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body>
-  <!-- Embed MP3 Audio (used to play on bid button click) -->
+  <!-- Embed MP3 Audio -->
   <audio id="auction-audio" preload="auto">
-    <source src="https://raw.githubusercontent.com/Shahidshahil/Ipl-mp3/raw/refs/heads/main/VIVO%20IPL%20tone%20%20latest%202021%20%20IPL%20Music%20%20Free%20ipl%20music%20%20ipl%20music%20%20IPL%20Live%20Music.mp3" type="audio/mpeg">
+    <source src="https://github.com/Shahidshahil/Ipl-mp3/raw/refs/heads/main/VIVO%20IPL%20tone%20%20latest%202021%20%20IPL%20Music%20%20Free%20ipl%20music%20%20ipl%20music%20%20IPL%20Live%20Music.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
@@ -69,29 +90,47 @@
   <p>Base Price: ₹100</p>
   <div id="bid-message"></div>
   <div id="leave-message"></div>
+
+  <!-- Live Player Count -->
+  <div id="player-count">Players Joined: 1</div>
+
+  <!-- Invite Section -->
+  <div id="invite-section">
+    <button onclick="generateInviteLink()">Invite</button>
+    <p id="invite-link"></p>
+  </div>
+
   <div id="players">
     <div id="player1">
+      <div class="live-status" id="live1">Live</div>
       Shahil - <button class="bid-button" onclick="placeBid('Shahil')">Bid</button> <button class="leave-button" onclick="leaveAuction(1)">Leave</button>
     </div>
     <div id="player2">
+      <div class="live-status" id="live2">Live</div>
       Irfan - <button class="bid-button" onclick="placeBid('Irfan')">Bid</button> <button class="leave-button" onclick="leaveAuction(2)">Leave</button>
     </div>
     <div id="player3">
+      <div class="live-status" id="live3">Live</div>
       Irshad - <button class="bid-button" onclick="placeBid('Irshad')">Bid</button> <button class="leave-button" onclick="leaveAuction(3)">Leave</button>
     </div>
     <div id="player4">
+      <div class="live-status" id="live4">Live</div>
       Mahesh - <button class="bid-button" onclick="placeBid('Mahesh')">Bid</button> <button class="leave-button" onclick="leaveAuction(4)">Leave</button>
     </div>
     <div id="player5">
+      <div class="live-status" id="live5">Live</div>
       Bazeer - <button class="bid-button" onclick="placeBid('Bazeer')">Bid</button> <button class="leave-button" onclick="leaveAuction(5)">Leave</button>
     </div>
     <div id="player6">
+      <div class="live-status" id="live6">Live</div>
       Naveen - <button class="bid-button" onclick="placeBid('Naveen')">Bid</button> <button class="leave-button" onclick="leaveAuction(6)">Leave</button>
     </div>
     <div id="player7">
+      <div class="live-status" id="live7">Live</div>
       Rockstar - <button class="bid-button" onclick="placeBid('Rockstar')">Bid</button> <button class="leave-button" onclick="leaveAuction(7)">Leave</button>
     </div>
     <div id="player8">
+      <div class="live-status" id="live8">Live</div>
       Raasikumar - <button class="bid-button" onclick="placeBid('Raasikumar')">Bid</button> <button class="leave-button" onclick="leaveAuction(8)">Leave</button>
     </div>
   </div>
@@ -102,6 +141,7 @@
     let highestBidder = "Shahil";
     let playersLeft = 0;
     const totalPlayers = 8;
+    let playersJoined = 1;  // Initially, the user is part of the auction
 
     // Reference to the audio element
     const auctionAudio = document.getElementById('auction-audio');
@@ -110,7 +150,6 @@
       if (playersLeft < totalPlayers - 1) {
         highestBid += 50;
         highestBidder = playerName;
-        // Play audio when the bid button is clicked
         auctionAudio.currentTime = 0; // Rewind to the start
         auctionAudio.play();
         document.getElementById('bid-message').innerText = `${playerName} Bid ₹${highestBid} for Royal Challengers Bangalore`;
@@ -122,9 +161,27 @@
       const playerName = document.getElementById(`player${player}`).innerText.split(' - ')[0];
       document.getElementById(`player${player}`).style.display = 'none';
       document.getElementById('leave-message').innerText = `${playerName} Leave the Bid 🙌🏻`;
+      playersJoined--;
+      document.getElementById('player-count').innerText = `Players Joined: ${playersJoined}`;
+      
       if (playersLeft === totalPlayers - 1) {
         document.getElementById('bid-message').innerText = `Congratulations, Royal Challengers Bangalore sold to ${highestBidder} for ₹${highestBid}`;
       }
+    }
+
+    // Invite link generation
+    function generateInviteLink() {
+      const uniqueID = Math.random().toString(36).substr(2, 9);  // Generate unique ID
+      const inviteUrl = `https://shahidshahil.github.io/Cricket-Rcb/?invite=${uniqueID}`;
+      document.getElementById('invite-link').innerText = `Invite Link: ${inviteUrl}`;
+    }
+
+    // Simulate joining a player from the invite link
+    if (window.location.search.includes("invite")) {
+      playersJoined++;
+      document.getElementById('player-count').innerText = `Players Joined: ${playersJoined}`;
+      // Show "Live" status for the next player to join
+      document.getElementById(`live${playersJoined}`).style.display = 'block';
     }
   </script>
 </body>
